@@ -158,7 +158,7 @@ brew services start redis
 使用`brew cask`安装的包：
 
 ```
-brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemusic keka alfred cheatsheet shadowsocksx-ng wireshark homebrew/cask-versions/microsoft-remote-desktop-beta  movist mplayerx mpv vlc vlcstreamer smartgit folx typora poedit xld ichm postman skype sublime-text xscope go2shell cLion goland jxplorer
+brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemusic keka alfred cheatsheet shadowsocksx-ng wireshark homebrew/cask-versions/microsoft-remote-desktop-beta  movist mplayerx mpv vlc vlcstreamer smartgit folx typora poedit xld ichm postman skype sublime-text xscope go2shell cLion goland homebrew/cask-versions/adoptopenjdk8
 ```
 
 - google-chrome：Chrome浏览器
@@ -192,13 +192,15 @@ brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemus
 - go2shell：Finder中集成Shell快捷键
 - CLion：C/C++ 开发IDE
 - GoLand：Golang 开发IDE
-- jxplorer：LDAP管理工具
+- homebrew/cask-versions/adoptopenjdk8: JDK 8.0
 
 
 
 ## 日常办公及常用软件
 
 [TODO]
+
+- jxplorer：LDAP管理工具，需要JDK环境支持，[官网下载](https://sourceforge.net/projects/jxplorer/)
 
 
 
