@@ -2,7 +2,7 @@
 
 
 
-![zsh-logo_1200x500](img/zsh配置与使用/zsh-logo_1200x500.jpg)
+![zsh-logo_1200x500](img/zsh-logo_1200x500.jpg)
 
 # 说明
 
@@ -50,7 +50,7 @@ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 
 插件的启用配置选项，都在`.zshrc`文件的`plugins`配置参数中，可以灵活的更改，针对本文的几个插件，更改效果如下：
 
-![zsh-plugins-config](img/zsh配置与使用/zsh-plugins-config.png)
+![zsh-plugins-config](img/zsh-plugins-config.png)
 
 配置文件更新后，可以使用`source ~/.zshrc`使配置文件在当前终端生效。
 
@@ -60,7 +60,7 @@ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 
 autojump 是一个十分便捷的小工具，可以很方便的让我们进入某个目录，而不再输入完整的目录。autojump 自有一个数据库系统，会自动记录你所有进入过的目录，并且会根据你进入某个目录的频率，分配相应的权重。
 
-![autojump](img/zsh配置与使用/zsh-autojump-demo.png)
+![autojump](img/zsh-autojump-demo.png)
 
 zsh 和 autojump 的组合形成了 zsh 下最强悍的使用组合，可以使用如下方式安装：
 
@@ -135,7 +135,7 @@ j b
 
 使用`zsh-autosuggestions`插件后，输入命令时可提示自动补全（灰色部分），然后按键盘 → 即可补全（[详细介绍](https://github.com/zsh-users/zsh-autosuggestions)）。
 
-![zsh-autosuggestions-demo](img/zsh配置与使用/zsh-autosuggestions-demo.png)
+![zsh-autosuggestions-demo](img/zsh-autosuggestions-demo.png)
 
 安装插件：
 
@@ -170,7 +170,7 @@ bindkey '^z' autosuggest-execute
 
 使用`zsh-syntax-highlighting`插件后，日常用的命令会高亮显示，命令错误显示红色，如下图（[详细介绍](https://github.com/zsh-users/zsh-syntax-highlighting)）。
 
-![zsh-syntax-highlighting-demo](img/zsh配置与使用/zsh-syntax-highlighting-demo.png)
+![zsh-syntax-highlighting-demo](img/zsh-syntax-highlighting-demo.png)
 
 安装插件：
 
