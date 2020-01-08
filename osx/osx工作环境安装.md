@@ -122,7 +122,7 @@ ZSH_THEME="robbyrussell"
 
 ```
 brew update
-brew install tmux git subversion go upx curl wget dos2unix autoconf automake cmake
+brew install tmux git subversion go upx curl wget dos2unix autoconf automake cmake autojump protobuf protoc-gen-go
 brew install sshfs
 ```
 
@@ -136,6 +136,9 @@ brew install sshfs
 - wget：利用URL规则的命令行下载工具
 - dos2unix：文档格式转换工具
 - autoconf/automake/cmake: 编译相关
+- autojump: oh-my-zsh使用的自动跳转插件
+- protobuf: Protobuf协议工具
+- protoc-gen-go：针对Golang的Protobuf代码生成工具
 
 
 
