@@ -235,7 +235,9 @@ brew install mongodb-community
 Wireshark: Permission denied
 ```
 
-问题出现的原因：
+
+
+**问题原因：**
 
 ```
 This is the case after installing "Add Wireshark to the system PATH" and seems to be a problem in the upstream package. After installation, these two files are not readable and cause the above error:
@@ -243,7 +245,9 @@ This is the case after installing "Add Wireshark to the system PATH" and seems t
 -rw-------  1 root  wheel  43 Nov 20 18:19 /etc/paths.d/Wireshark
 ```
 
-解决方案：
+
+
+**解决方案：**
 
 ```
 sudo chmod 644 /etc/manpaths.d/Wireshark /etc/paths.d/Wireshark
@@ -255,6 +259,10 @@ sudo chmod 644 /etc/manpaths.d/Wireshark /etc/paths.d/Wireshark
 
 安装`ShadowsocksX-NG`科学上网软件后，发现无法启动，出现软件闪退现象。
 
+
+
+问题原因：**
+
 问题出现原因在该软件的[版本描述](https://github.com/shadowsocks/ShadowsocksX-NG/releases)中有说明：
 
 ```
@@ -262,7 +270,9 @@ Known Issue:
 #1185 Would crash in fresh installation. Work around: Make sure the folder ~/.ShadowsocksX-NG exists.
 ```
 
-解决方案：
+
+
+解决方案：**
 
 ```
 mkdir ~/.ShadowsocksX-NG
@@ -276,12 +286,34 @@ mkdir ~/.ShadowsocksX-NG
 
 
 
-解决方案：
+**解决方案：**
 
 在`.zshrc`文件中增加相应配置：
 
 ```
 alias tree="tree -N"
+```
+
+
+
+### Jetbrains 系列工具提示`Filesystem Case-Sensitivity Mismatch`
+
+![case_mismatch_notification](img/case_mismatch_notification.png)
+
+
+
+问题原因：**
+
+在Mac OSX及Wndows系统中，Jetbrains相关的IDEs默认使用大小写无关选项；如果项目所在磁盘分区为大小写敏感的，则会提示该问题。
+
+
+
+**解决方案：**
+
+在IDEA的`idea.properties`配置文件中增加有关选项；进入配置选项方式为相应IDEA的菜单`Help -> Edit Custom Properties`,如果配置文件不存在，按提示创建一个，并在最后增加如下内容：
+
+```
+idea.case.sensitive.fs=true
 ```
 
 
