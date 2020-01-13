@@ -260,7 +260,8 @@ plugins=(
 - colored-man-pages：顾名思义，彩色的man很赞！
 - sudo：当你输入一个命令发现需要root权限，通常只能按方向上键，然后光标移到头部，加入sudo，但是有了这个插件，不用再移动光标到头部了，直接两下 ESC， sudo就会自动加入到最前面。。。
 - zsh-autosuggestions：命令行自动建议
-- zsh-syntax-highlighting：命令行高亮提示
+
+  
 
 
 
