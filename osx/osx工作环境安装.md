@@ -1,7 +1,3 @@
-[TOC]
-
-
-
 # 说明
 
 作为一个Macbook Pro的老用户，在新年到来之际，狠心给自己买了个大礼物。因为之前使用较久的系统，虽然可以使用系统自带的`迁移助理`进行配置和数据文件传输，但考虑到系统中残留的各种信息比较多，还是决定浪费一点点时间进行重新配置，本文主要为记载重新配置过程中，进行的各种文件安装及操作。针对系统使用过程中的个性化配置，可参照[OSX配置及使用](./osx配置及使用.md)设置说明文档。
@@ -13,7 +9,7 @@
 新MAC的基本配置信息：
 
 - MacBook Pro 16-inch，2019
-- OS：macOS Catalina 10.15.2
+- OS：macOS Catalina 10.15.3
 - CPU：2.3GHz 八核 Intel Core i9
 - 内存：64 GB 2667MHz DDR4
 - 磁盘：4TB SSD
@@ -34,6 +30,18 @@ Data ==> /System/Volumes/Data
 Work ==> /Volumes/Work 
 ```
 
+
+### 系统版本问题
+
+当前存在新的系统版本 v10.15.4，系统禁用了 TNT 证书，会导致很多软件破解失败；同时，新版本完全不支持任何 32 位程序，很多新的软件在新的平台中会崩溃。
+- CleanMyMac x 4.6 意外退出
+- pdfpen 意外退出
+- sketch 意外退出
+- boom 3D 意外退出
+- Notability 报错
+- reeder 崩溃
+- 1Password 崩溃
+- paste 崩溃
 
 
 ### 配置 RamDisk
@@ -196,6 +204,7 @@ brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemus
 - go2shell：Finder中集成Shell快捷键
 - CLion：C/C++ 开发IDE
 - GoLand：Golang 开发IDE
+- WebStorm：Nodejs 开发 IDE
 - homebrew/cask-versions/adoptopenjdk8: JDK 8.0
 
 
@@ -208,7 +217,7 @@ brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemus
 
 
 
-## 其他软件安装
+## 专业开发软件安装
 
 
 
