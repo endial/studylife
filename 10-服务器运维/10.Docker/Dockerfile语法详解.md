@@ -391,7 +391,12 @@ EXPOSE 指令为构建的镜像设置监听端口，使容器在运行时监听�
 ```dockerfile
 # Usage: EXPOSE <port> <port> ...
 EXPOSE 80 8080 443
+
+# Usage: EXPOSE <port-start>-<port-end> ...
+EXPOSE 8000-9000
 ```
+
+
 
 `EXPOSE`指令并不会让容器监听 host 的端口，如果需要，需要在`docker run`时使用`-p`、`-P`参数来发布容器端口到 host 的某个端口上。
 
@@ -549,7 +554,7 @@ STOPSIGNAL signal
 
 
 
-### 3.17 HEALTHCHECK
+### HEALTHCHECK
 
 `HEALTHCHECK 指令增加自定义的心跳检测功能，多次使用只有最后一次有效。格式：
 
