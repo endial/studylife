@@ -15,7 +15,8 @@
 
 
 
-- [endial/nginx-alpine](./docker-nginx-alpine镜像.md)：
+- [endial/redis-alpine](./docker-redis-alpine镜像.md)：基于Alpine的Redis镜像，提供 k-v 数据存储服务
+- [endial/nginx-alpine](./docker-nginx-alpine镜像.md)：基于Alpine的Nginx镜像，提供Web服务
 
 
 
