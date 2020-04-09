@@ -36,7 +36,7 @@ Redis是一个开源的使用ANSI C语言编写、遵守BSD协议、支持网络
 ## 文档列表
 
 - [Redis安装与基本操作-TODO](./Redis安装与基本操作.md)
-- [Redis主从与哨兵模式集群-TODO](Redis主从与哨兵模式集群.md)
+- [Redis主从与哨兵模式集群](./Redis主从与哨兵模式集群.md)
 
 
 
@@ -53,6 +53,7 @@ Redis是一个开源的使用ANSI C语言编写、遵守BSD协议、支持网络
 - [Redis中文官方网站](http://www.redis.cn)
 - [Redis官方网站](http://www.redis.io)
 - [Redis菜鸟教程](https://www.runoob.com/redis/redis-tutorial.html)
+- [Redis入门教程](https://zhuanlan.zhihu.com/p/37982685)
 
 
 
