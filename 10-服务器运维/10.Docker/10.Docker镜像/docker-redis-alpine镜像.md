@@ -30,7 +30,7 @@ Git仓库地址：https://github.com/endial/docker-redis-alpine
 - 修改镜像创建命令，减少镜像层数
 - 增加初始化配置文件至数据卷操作
 
-具体使用文档可参照[仓库说明文档](https://github.com/endial/docker-redis-alpine/README.md)。
+具体使用文档可参照[仓库说明文档](https://github.com/endial/docker-redis-alpine/blob/master/README.md)。
 
 
 
@@ -98,7 +98,7 @@ RUN addgroup -S -g 1000 redis; \
 		-exec ln -svfT 'redis-server' '{}' ';' \
 	; \
 	\
-	cp -rf /usr/src/redis/*.conf /etc/redis/ \
+	cp -rf /usr/src/redis/*.conf /etc/redis/; \
 	rm -r /usr/src/redis; \
 	\
 	runDeps="$( \
@@ -113,12 +113,12 @@ RUN addgroup -S -g 1000 redis; \
 	redis-cli --version; \
 	redis-server --version
 
-VOLUME [ "/srv/data", "/var/log", "/var/run" ]
+VOLUME [ "/srv/data", "/srv/conf", "/var/log", "/var/run" ]
 EXPOSE 6379
 
+COPY ./redis /etc/redis
 WORKDIR /srv/data/redis
 
-COPY redis /etc/
 ENTRYPOINT ["/etc/redis/entrypoint.sh"]
 
 CMD ["redis-server"]
