@@ -130,7 +130,7 @@ ZSH_THEME="robbyrussell"
 
 ```
 brew update
-brew install tmux git subversion go upx curl wget dos2unix autoconf automake cmake autojump protobuf protoc-gen-go tree
+brew install tmux git subversion go upx curl wget dos2unix autoconf automake cmake autojump protobuf protoc-gen-go tree telnet gpg
 brew install sshfs
 ```
 
@@ -148,6 +148,8 @@ brew install sshfs
 - protobuf：Protobuf协议工具
 - protoc-gen-go：针对Golang的Protobuf代码生成工具
 - tree：目录树显示工具
+- telnet：Telnet工具
+- gpg：GnuPG工具
 
 
 
@@ -170,7 +172,7 @@ brew services start redis
 使用`brew cask`安装的包：
 
 ```
-brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemusic keka alfred cheatsheet shadowsocksx-ng wireshark homebrew/cask-versions/microsoft-remote-desktop-beta  movist mplayerx mpv vlc vlcstreamer smartgit folx typora poedit xld ichm postman skype sublime-text xscope go2shell cLion goland homebrew/cask-versions/adoptopenjdk8
+brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemusic keka alfred cheatsheet shadowsocksx-ng wireshark homebrew/cask-versions/microsoft-remote-desktop-beta  movist mplayerx mpv vlc vlcstreamer smartgit folx typora poedit xld ichm postman skype sublime-text xscope go2shell cLion goland android-file-transfer homebrew/cask-versions/adoptopenjdk8
 ```
 
 - google-chrome：Chrome浏览器
@@ -205,6 +207,7 @@ brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemus
 - CLion：C/C++ 开发IDE
 - GoLand：Golang 开发IDE
 - WebStorm：Nodejs 开发 IDE
+- Android-file-transfer：Android系统文件传输工具
 - homebrew/cask-versions/adoptopenjdk8: JDK 8.0
 
 
@@ -329,18 +332,143 @@ idea.case.sensitive.fs=true
 
 ## 使用国内源安装Brew
 
-[TODO]
+### 使用中科大源安装
 
-### 安装后修改为阿里云源
+```bash
+/usr/bin/ruby -e "$(curl -fsSL https://cdn.jsdelivr.net/gh/ineo6/homebrew-install/install)"
+```
 
-```shell
-cd "$(brew --repo)"
-git remote set-url origin https://mirrors.aliyun.com/homebrew/brew.git
+如果命令执行中卡在下面信息：
 
-cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
-git remote set-url origin https://mirrors.aliyun.com/homebrew/homebrew-core.git
+```bash
+==> Tapping homebrew/core
+Cloning into '/usr/local/Homebrew/Library/Taps/homebrew/homebrew-core'...
+```
 
+请`Control + C`中断脚本执行如下命令：
+
+```bash
+cd "$(brew --repo)/Library/Taps/"
+mkdir homebrew && cd homebrew
+git clone git://mirrors.ustc.edu.cn/homebrew-core.git
+```
+
+**`cask` 同样也有安装失败或者卡住的问题，解决方法也是一样：**
+
+```bash
+cd "$(brew --repo)/Library/Taps/"
+cd homebrew
+git clone https://mirrors.ustc.edu.cn/homebrew-cask.git
+```
+
+成功执行之后继续执行前文的安装命令:
+
+```bash
+/usr/bin/ruby -e "$(curl -fsSL https://cdn.jsdelivr.net/gh/ineo6/homebrew-install/install)"
+```
+
+最后看到`==> Installation successful!`就说明安装成功了。
+
+最最后执行：
+
+```bash
+brew update
+```
+
+
+
+### 如何卸载Homebrew
+
+使用官方脚本同样会遇到`uninstall`地址无法访问问题，可以替换为下面脚本：
+
+```bash
+/usr/bin/ruby -e "$(curl -fsSL https://cdn.jsdelivr.net/gh/ineo6/homebrew-install/uninstall)"
+```
+
+
+
+### 修改镜像源
+
+`brew`、`homebrew/core`是必备项目，`homebrew/cask`、`homebrew/bottles`按需设置。
+
+通过 `brew config` 命令查看配置信息。
+
+>  注意：
+>
+> - 如果使用zsh，则需要修改的脚本文件为`~/.zshrc` 
+> - 如果使用bash，则需要修改的脚本文件为`~/.bash_profile` 
+
+
+
+#### 中科大源
+
+```bash
+git -C "$(brew --repo)" remote set-url origin https://mirrors.ustc.edu.cn/brew.git
+
+git -C "$(brew --repo homebrew/core)" remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
+
+git -C "$(brew --repo homebrew/cask)" remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
+
+brew update
+
+# 长期替换homebrew-bottles
+echo 'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles' >> ~/.bash_profile
+source ~/.bash_profile
+```
+
+注意`bottles`可以临时设置，在终端执行下面命令：
+
+```bash
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+```
+
+
+
+#### 清华大学源
+
+```bash
+git -C "$(brew --repo)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git
+
+git -C "$(brew --repo homebrew/core)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git
+
+git -C "$(brew --repo homebrew/cask)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-cask.git
+
+brew update
+
+# 长期替换homebrew-bottles
+echo 'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles' >> ~/.bash_profile
+source ~/.bash_profile
+```
+
+
+
+#### 阿里云源
+
+```bash
+git -C "$(brew --repo)" remote set-url origin https://mirrors.aliyun.com/homebrew/brew.git
+
+git -C "$(brew --repo homebrew/cask)" remote set-url origin https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-cask.git
+
+brew update
+
+# 长期替换homebrew-bottles
 echo 'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles' >> ~/.bash_profile
 source ~/.bash_profile
 ```
+
+
+
+#### 恢复默认源
+
+```bash
+git -C "$(brew --repo)" remote set-url origin https://github.com/Homebrew/brew.git
+
+git -C "$(brew --repo homebrew/core)" remote set-url origin https://github.com/Homebrew/homebrew-core.git
+
+git -C "$(brew --repo homebrew/cask)" remote set-url origin https://github.com/Homebrew/homebrew-cask.git
+
+brew update
+```
+
+`homebrew-bottles`配置只能手动删除，将 `~/.bash_profile` 文件中的 `HOMEBREW_BOTTLE_DOMAIN=https://mirrors.xxx.com`内容删除，并执行 `source ~/.bash_profile`。
 
