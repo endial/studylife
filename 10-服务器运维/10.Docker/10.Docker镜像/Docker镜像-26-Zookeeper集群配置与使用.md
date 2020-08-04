@@ -176,28 +176,6 @@ $ docker logs tmp_zoo1_1
 
 
 
-### 动态扩容与缩容
-
-```shell
-$ docker-compose -f docker-compose-cluster.yml scale redis-replica=3
-```
-
-以上命令，将 replicated 容器增加为 3 台，也可以使用类似命令减少容器数量。
-
-> 不能增加/减少 primary 容器的数量，仅能存在一个 primary 容器节点。
-
-**扩容后容器状态**
-
-将集群中`redis-replica`服务扩容为三个服务容器：
-
-![docker-cluster-scale](img/docker-cluster-scale-up.png)
-
-**缩容后容器状态**
-
-将集群中`redis-replica`服务缩容为两个服务容器：
-
-![docker-cluster-scale-down](img/docker-cluster-scale-down.png)
-
 ### 验证容器可用性
 
 链接至其中一个 Zookeeper 容器节点，并使用命令`zkServer.sh status`查看服务状态，至少有一个为`leader`，其余的为`follower`:
