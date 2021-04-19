@@ -2,14 +2,14 @@
 
 # 说明
 
-本目录中的脚本，主要用来为`Macbook osx`配置RamDisk。配置生成的RamDisk一般用于应用程序缓存，以减少SSD消耗，同时，稍微提升下性能。
+本目录中的脚本，主要用来为`Macbook osx`配置RamDisk。配置生成的 RamDisk 一般用于应用程序缓存，以减少 SSD 消耗；同时，稍微提升下性能。
 
 
 
 主要包含两个文件：
 
-- initramdisk.sh: 用来配置、生成并挂载RamDisk；如果存在缓存备份，则恢复至RamDisk
-- syncramdisk.sh: 用来将RamDisk压缩并存储至磁盘，以进行缓存备份
+- initramdisk.sh: 用来配置、生成并挂载 RamDisk；如果存在缓存备份，则恢复至 RamDisk
+- syncramdisk.sh: 用来将 RamDisk 压缩并存储至磁盘，以进行缓存备份
 
 
 
@@ -51,7 +51,7 @@ WORK_PATH=/etc/RamDisk
 BAK_PATH=$WORK_PATH/$DISK_NAME.tar.gz
 ```
 
-如果备份文件不存在，则创建一个空的RamDisk。
+如果备份文件不存在，则创建一个空的 RamDisk。
 
 
 
@@ -102,6 +102,8 @@ RamDisk中会被归档的最大单个文件大小，用于避免存档较大文�
 
 ## 启用与禁用
 
+### 使用 Hook 方式
+
 正常使用RamDisk，需要为用户增加登录时自动挂载及注销时自动备份操作。主要使用系统的`Hook`功能。
 
 
@@ -125,8 +127,6 @@ sudo defaults write com.apple.loginwindow LoginHook /etc/RamDisk/initramdisk.sh
 sudo defaults write com.apple.loginwindow LogoutHook /etc/RamDisk/syncramdisk.sh
 ```
 
-
-
 - 删除Hook（禁用RamDisk）
 
 ```
@@ -136,25 +136,46 @@ sudo defaults delete com.apple.loginwindow LogoutHook
 
 
 
+### 使用 Plist 方式
+
+增加开机自启动 Plist 文件`/Library/LaunchDaemons/com.none.Ramdisk.plist`,内容如下:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Ramdisk</key>
+        <string>com.none.Ramdisk</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>/etc/RamDisk/initramdisk.sh</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+    </dict>
+</plist>
+```
+
+该方式配置的 Ramdisk 不会在系统退出时自动备份。使用与不需要备份临时数据的场景。
+
+
+
 ## 迁移应用缓存
 
-如迁移Google Chrome缓存至RamDisk中。
+如迁移 Google Chrome 缓存至 RamDisk 中。
 
 
 
-- 创建RamDisk缓存目录
+- 创建 RamDisk 缓存目录
 
 ```
 mkdir /Volumes/RamDisk/Caches
 ```
 
+- 退出 Google Chrome
 
-
-- 退出Google Chrome
-
-迁移缓存文件之前，最好关闭应用，防止程序异常。
-
-
+  迁移缓存文件之前，最好关闭应用，防止程序异常。
 
 - 迁移Google缓存
 
@@ -166,3 +187,10 @@ mv Google /Volumes/RamDisk/Caches/; ln -sf /Volumes/RamDisk/Caches/Google ./
 
 
 其他需要移到RamDisk的内容也可以如法炮制。
+
+
+
+## 常见应用缓存位置
+
+- Google Chrome：~/Library/Caches/Google
+- Safari()
