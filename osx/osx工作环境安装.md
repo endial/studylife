@@ -1,12 +1,12 @@
 # 说明
 
-作为一个Macbook Pro的老用户，在新年到来之际，狠心给自己买了个大礼物。因为之前使用较久的系统，虽然可以使用系统自带的`迁移助理`进行配置和数据文件传输，但考虑到系统中残留的各种信息比较多，还是决定浪费一点点时间进行重新配置，本文主要为记载重新配置过程中，进行的各种文件安装及操作。针对系统使用过程中的个性化配置，可参照[OSX配置及使用](./osx配置及使用.md)设置说明文档。
+作为一个 Macbook Pro 的老用户，在新年到来之际，狠心给自己买了个大礼物。因为之前使用较旧的系统，虽然可以使用系统自带的`迁移助理`进行配置和数据文件传输，但考虑到系统中残留的各种信息比较多，还是决定浪费一点点时间进行重新配置，本文主要为记载重新配置过程中，进行的各种文件安装及操作。针对系统使用过程中的个性化配置，可参照<[OSX配置及使用](./osx配置及使用.md)>设置说明文档。
 
 
 
 ## 基本环境配置
 
-新MAC的基本配置信息：
+新 MAC 的基本配置信息：
 
 - MacBook Pro 16-inch，2019
 - OS：macOS Catalina 10.15.3
@@ -23,32 +23,51 @@
 
 
 
-分区挂载（自动）路径：
+#### 分区挂载路径配置
 
+系统默认将磁盘挂载在 `/Volumes`目录中，如果需要挂载在其他位置，可以按一下方式操作（如挂载 Work 磁盘为 ~/Work):
+
+使用`diskutil list`获取磁盘标识：
+
+```shell
+$ diskutil list
+......
+/dev/disk1 (synthesized):
+   #:                       TYPE NAME                    SIZE       IDENTIFIER
+   0:      APFS Container Scheme -                      +250.0 GB   disk1
+                                 Physical Store disk0s3
+   1:                APFS Volume work                    91.2 GB    disk1s1
 ```
-Data ==> /System/Volumes/Data
-Work ==> /Volumes/Work 
+
+
+
+使用`diskutil info /dev/disk1`获取磁盘 UUID（如磁盘 /dev/disk1)：
+
+```shell
+$ diskutil info /dev/disk1
+   Device Identifier:         disk1
+   Device Node:               /dev/disk1
+......
+   Disk / Partition UUID:     F7B36E76-8FF3-4CB2-889E-9663C971933B
+......
+```
+
+修改文件`/etc/fstab`设置开机自动挂载路径：
+
+```shell
+$ sudo vi /etc/fstab
+# 增加类似如下内容(使用 UUID)
+UUID=F7B36E76-8FF3-4CB2-889E-9663C971933B /Users/endial/work apfs rw
 ```
 
 
-### 系统版本问题
-
-当前存在新的系统版本 v10.15.4，系统禁用了 TNT 证书，会导致很多软件破解失败；同时，新版本完全不支持任何 32 位程序，很多新的软件在新的平台中会崩溃。
-- CleanMyMac x 4.6 意外退出
-- pdfpen 意外退出
-- sketch 意外退出
-- boom 3D 意外退出
-- Notability 报错
-- reeder 崩溃
-- 1Password 崩溃
-- paste 崩溃
 
 
 ### 配置 RamDisk
 
-虽然SSD速度比较快，但考虑到毕竟开发过程中会经常牵涉到大量的编译操作，众多的临时文件反复读写还是会影响磁盘寿命；同时，将部分软件的缓存文件放置在内存中，也会提升软件性能，因此，为系统默认配置RamDisk。
+虽然 SSD 速度比较快，但考虑到毕竟开发过程中会经常牵涉到大量的编译操作，众多的临时文件反复读写还是会影响磁盘寿命；同时，将部分软件的缓存文件放置在内存中，也会提升软件性能，因此，为系统默认配置 RamDisk。
 
-具体配置文件及脚本，可参照[osx系统RamDisk配置](./RamDisk/osx系统RamDisk配置.md)文件中的步骤进行。
+具体配置文件及脚本，可参照<[osx系统RamDisk配置](./RamDisk/osx系统RamDisk配置.md)>文件中的步骤进行。
 
 ***当前版本中，Safari缓存如果移动至RamDisk，将无法写入，待解决***
 
@@ -76,9 +95,9 @@ Load key "/Users/endial/.ssh/Endial_rsa_git": bad permissions
 
 系统工具主要针对使用频度较高或比较基础的应用软件，需要尽早安装：
 
-- NTFS for Mac：为系统增加NTFS写入支持 
+- NTFS for Mac：为系统增加 NTFS 写入支持 
 - Little Snitch：防火墙软件，用户后续软件破解或屏蔽网络登录 
-- Sougo输入法：搜狗中文输入法 
+- Sougo 输入法：搜狗中文输入法 
 - 1Password：个人密码保存及管理工具
 - Bartender：系统状态栏应用图标隐藏工具 
 
@@ -90,7 +109,7 @@ Load key "/Users/endial/.ssh/Endial_rsa_git": bad permissions
 
 ### oh-my-zsh
 
-Catalina系统默认使用ZSH，为了方便使用，安装`oh-my-zsh`配置脚本：
+Catalina 系统默认使用 ZSH，为了方便使用，安装`oh-my-zsh`配置脚本：
 
 ```
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -112,11 +131,75 @@ ZSH_THEME="robbyrussell"
 
 
 
+常用`~/.zshrc`配置：
+
+```shell
+plugins=(
+	autojump
+	zsh-syntax-highlighting
+	zsh-autosuggestions
+)
+
+# 定义扩展名对应的默认打开方式
+alias -s html=subl   # 在命令行直接输入后缀为 html 的文件名，会在 Sbulime Text 中打开
+alias -s rb=subl     # 在命令行直接输入 ruby 文件，会在 Sublime Text 中打开
+alias -s py=subl       # 在命令行直接输入 python 文件，会用 nano 中打开，以下类似
+alias -s js=subl
+alias -s c=subl
+alias -s go=subl
+alias -s java=subl
+alias -s txt=subl
+alias -s md=typora
+alias -s db=navi	# 使用Navicat Premium打开Sqlite数据库文件
+alias -s gz='tar -xzvf'
+alias -s tgz='tar -xzvf'
+alias -s zip='unzip'
+alias -s bz2='tar -xjvf'
+
+# 定义命令别名
+alias cls='clear'
+alias ll='ls -l'
+alias la='ls -a'
+alias vi='nano'
+#alias javac="javac -J-Dfile.encoding=utf8"
+alias grep="grep --color=auto"
+#alias aria2="aria2c --conf-path="~/Documents/aria2.conf" -D"
+alias typora="open -a typora" 	# 暂时不用，已将可执行文件连接至/usr/local/bin/typora
+alias nn=nano
+alias tree="tree -N"	# 解决中文乱码问题
+alias navi="open -a \"Navicat Premium\""
+
+alias proxyon="export http_proxy=http://127.0.0.1:1087; export https_proxy=http://127.0.0.1:1087"
+alias proxyoff="unset http_proxy; unset https_proxy"
+
+# 设置环境变量
+export GOPATH="/Users/endial/Golang"
+export GOPROXY=https://goproxy.cn,https://goproxy.io,direct
+export GO111MODULE=auto
+export PATH="${PATH}:~/Golang/bin"
+
+PATH="${PATH}:~/Library/Android/sdk/platform-tools"
+PATH="/usr/local/sbin:${PATH}"
+export PATH
+
+export ANDROID_HOME="~/Library/Android/sdk"
+export ANDROID_SDK_ROOT="~/Library/Android/sdk"
+export ANDROID_NDK_HOME="~/Library/Android/sdk/ndk-bundle"
+
+export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles
+export DOCKER_VOLUME_BASE=/Volumes/RamDisk/Volumes
+
+# fix bug for command 'find' always return 'no matches found: ...'
+setopt no_nomatch
+```
+
+
+
 ### brew
 
 [Brew](http://brew.sh/) 是 Mac 下面的包管理工具，通过 Github 托管适合 Mac 的编译配置以及 Patch，可以方便的安装开发工具。
 
-后续大部分基本工具使用`brew`安装，因此，先安装`homebrew`工具，安装命令可参考[Homebrew官网](https://brew.sh/)指导说明：
+后续大部分基本工具使用`brew`安装，因此，先安装`homebrew`工具，安装命令可参考 [Homebrew官网](https://brew.sh/) 指导说明：
 
 ```
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -130,7 +213,7 @@ ZSH_THEME="robbyrussell"
 
 ```
 brew update
-brew install tmux git subversion go upx curl wget dos2unix autoconf automake cmake autojump protobuf protoc-gen-go tree telnet gpg
+brew install tmux git subversion upx curl wget dos2unix autoconf automake cmake autojump brew install go protobuf protoc-gen-go tree telnet
 brew install sshfs
 ```
 
@@ -149,7 +232,8 @@ brew install sshfs
 - protoc-gen-go：针对Golang的Protobuf代码生成工具
 - tree：目录树显示工具
 - telnet：Telnet工具
-- gpg：GnuPG工具
+
+  
 
 
 
@@ -172,16 +256,16 @@ brew services start redis
 使用`brew cask`安装的包：
 
 ```
-brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemusic keka alfred cheatsheet shadowsocksx-ng wireshark homebrew/cask-versions/microsoft-remote-desktop-beta  movist mplayerx mpv vlc vlcstreamer smartgit folx typora poedit xld ichm postman skype sublime-text xscope go2shell cLion goland android-file-transfer homebrew/cask-versions/adoptopenjdk8
+brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemusic keka alfred cheatsheet shadowsocksx-ng wireshark homebrew/cask-versions/microsoft-remote-desktop-beta  mplayerx vlc vlcstreamer smartgit folx typora poedit xld ichm postman sublime-text xscope go2shell docker
+brew cask install cLion goland 
+brew cask install android-file-transfer homebrew/cask-versions/adoptopenjdk8
 ```
 
 - google-chrome：Chrome浏览器
 - iterm2：好用的终端软件，完全可以替代系统的Terminal
 - alfred：效率工具，必装，完全代替系统的Spotlight
 - cheatsheet：效率工具，快捷键提示
-- movist：媒体播放工具
 - mplayerx：媒体播放工具
-- mpv：媒体播放工具
 - vlc：媒体播放工具
 - vlcstreamer：VLC推流工具
 - shadowsocksx-ng：VPN科学上网工具
@@ -200,7 +284,6 @@ brew cask install google-chrome iterm2 wechat qq baidunetdisk osxfuse neteasemus
 - ichm：HELP文件浏览工具
 - keka：压缩工具
 - postman：API调试
-- skype：Skype通讯软件
 - sublime-text：Sublime Text文编编辑器
 - xscope：屏幕测量工具
 - go2shell：Finder中集成Shell快捷键
@@ -316,13 +399,13 @@ alias tree="tree -N"
 
 问题原因：**
 
-在Mac OSX及Wndows系统中，Jetbrains相关的IDEs默认使用大小写无关选项；如果项目所在磁盘分区为大小写敏感的，则会提示该问题。
+在 Mac OSX 及 Wndows 系统中，Jetbrains 相关的 IDEs 默认使用大小写无关选项；如果项目所在磁盘分区为大小写敏感的，则会提示该问题。
 
 
 
 **解决方案：**
 
-在IDEA的`idea.properties`配置文件中增加有关选项；进入配置选项方式为相应IDEA的菜单`Help -> Edit Custom Properties`,如果配置文件不存在，按提示创建一个，并在最后增加如下内容：
+在 IDEA 的`idea.properties`配置文件中增加有关选项；进入配置选项方式为相应 IDEA 的菜单`Help -> Edit Custom Properties`,如果配置文件不存在，按提示创建一个，并在最后增加如下内容：
 
 ```
 idea.case.sensitive.fs=true

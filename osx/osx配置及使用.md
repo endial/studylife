@@ -15,6 +15,35 @@
 - 右上角：桌面
 - 右下角：启动屏幕保护程序
 
+更改`系统偏好设置-》安全性与隐私-》通用`中的有关启用密码选项，选中: 进入睡眠或开始屏幕保护程序`立即`要求输入密码
+
+
+
+## 节能
+
+### 关闭蓝牙唤醒
+
+- 转到系统偏好设置
+- 单击蓝牙
+- 按高级
+- 取消选中“允许蓝牙设备唤醒此计算机”旁边的框
+
+
+
+### 关闭电源小睡
+
+- 单击苹果菜单，然后选择系统偏好设置
+- 选择节能器
+- 取消选中“使用电池供电时启用小睡”旁边的框
+
+
+
+### 关闭睡眠时通知
+
+- 在“系统偏好设置”中，选择“通知”
+- 单击左侧边栏顶部的请勿打扰
+- 选中“显示器休眠时”旁边的框
+
 
 
 ## 更换文件夹图标
@@ -30,9 +59,9 @@
 
 ## RamDisk配置
 
-虽然SSD速度比较快，但考虑到毕竟开发过程中会经常牵涉到大量的编译操作，众多的临时文件反复读写还是会影响磁盘寿命；同时，将部分软件的缓存文件放置在内存中，也会提升软件性能，因此，为系统默认配置RamDisk。
+虽然 SSD 速度比较快，但考虑到毕竟开发过程中会经常牵涉到大量的编译操作，众多的临时文件反复读写还是会影响磁盘寿命；同时，将部分软件的缓存文件放置在内存中，也会提升软件性能，因此，为系统默认配置 RamDisk。
 
-具体配置文件及脚本，可参照[osx系统RamDisk配置](./RamDisk/osx系统RamDisk配置.md)文件中的步骤进行。
+具体配置文件及脚本，可参照<[OSX系统RamDisk配置](./RamDisk/osx系统RamDisk配置.md)>文件中的步骤进行。
 
 ***当前版本中，Safari缓存如果移动至RamDisk，将无法写入，待解决***
 
@@ -137,3 +166,127 @@ sudo defaults delete com.apple.loginwindow LogoutHook
 
 
 ### 增加系统自启动应用及任务
+
+
+
+## 重置系统管理控制器SMC
+
+如果系统出现异常，可以尝试重置Mac的SMC。SMC管理各种硬件过程，包括电池的工作方式。虽然这是万不得已的方法，但它不会对Mac造成任何损害，Apple经常推荐它作为无法通过简单解决方案解决的问题的解决方案。
+
+如何使用不可拆卸的电池在MacBooks上重置SMC：
+
+- 关闭MacBook
+
+- 关闭时，请按Shift + Control + Option（Alt）键
+
+- 按住这些键的同时，按电源按钮（在带有Touch Bar的MacBook上，Touch ID按钮为电源按钮）
+
+- 按住键和电源按钮十秒钟，然后松开它们
+
+- 再次按电源按钮以启动Mac
+
+  
+
+如何使用可拆卸电池在MacBooks上重置SMC：
+
+- 关闭您的Mac
+
+- 取出电池
+
+- 按住电源按钮（Touch ID按钮）5秒钟
+
+- 重新安装电池
+
+- 按电源按钮启动Mac
+
+
+
+## 关闭 ReportCrash
+
+### 关掉 ReportCrash
+
+这个操作会停止 ReportCrash，立竿见影，机器立马冷静。而且开机后，不会再次发生这个问题。
+
+```shell
+launchctl unload -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
+sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.ReportCrash.Root.plist
+```
+
+
+
+### 重新启用 ReportCrash
+
+这个操作用是后悔药。有些有洁癖的同学，可以通过它反悔。
+
+```shell
+launchctl load -w /System/Library/LaunchAgents/com.apple.ReportCrash.plist
+sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.ReportCrash.Root.plist
+```
+
+
+
+## 禁用`deleted`进程
+
+`deleted`进程由 CacheDelete 启动，相应的启动程序列表在目录`/System/Library/CacheDelete`中，如果需要修改该目录文件，需要先禁用 SIP（System Integrity Protection）。
+
+
+
+### 禁用SIP
+
+如果需要禁用 SIP，需要先进入系统恢复模式。
+
+- 重启系统
+- 在系统启动时，按住 **Cmd + R** 键，直到出现加载进度条
+- 在系统菜单启动终端： `Utilities > Terminal`
+- 在终端中运行命令 `csrutil disable`，运行成功后可以看到 SIP 被禁用的提示
+- 重启电脑
+
+
+
+### 移除CacheDelete目录
+
+使用正常用户账号登陆系统后，重新挂载系统目录为可写模式：
+
+```shell
+$ sudo mount -uw /
+```
+
+将 CacheDelete 目录移动到新位置：
+
+```shell
+$ sudo mv /System/Library/CacheDelete /System/Library/CacheDeleteBackup
+```
+
+重启电脑，重启后进入`活动监视器`查看 CPU 占用情况。此时，`deleted`的 CPU 占用应该降低，也不会周期性的激增。
+
+> 注意：如果同时将 deleted 可执行文件移除或移动至其他位置，则系统可能启动异常。
+
+
+
+## 禁用 Spotlight
+
+Spotlight（OS X系统的搜索程序）会索引所有文件以进行快速搜索，但索引操作会占用较多的 CPU 和磁盘 IO，并会周期性的运行（系统的`mds_stores`进程）。
+
+如果不需要使用 Spolight，可以考虑禁用该程序：
+
+```shell
+sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist
+```
+
+> 注意：该操作需要在禁用 SIP 之后才能完成
+
+可以通过以下命令重新启用：
+
+```shell
+sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist
+```
+
+
+
+## 减少透明度
+
+减少透明度可以有效降低`WindowServer`进程的 CPU 占用。
+
+- 打开`系统偏好设置`
+- 进入`辅助功能`->`显示`
+- 选中`减少透明度`选项
